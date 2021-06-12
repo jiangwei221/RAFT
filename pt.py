@@ -162,13 +162,13 @@ def raft_flow_a_to_b(model, imfile1, imfile2):
     # assert 0
 
     # img_a = imageio.imread(imfile1)
-    img_b = imageio.imread(imfile2)
+    # img_b = imageio.imread(imfile2)
     # x, y = np.meshgrid(np.linspace(0, 1024 - 1, 1024),
     #                np.linspace(0, 1024 - 1, 1024))
     # base_grid = np.stack([x, y], axis=-1)
     # flow_up_np = flow_up[0].cpu().permute(1,2,0).numpy() + base_grid
-    warped = cv2.remap(img_b, flow_up_np[..., 0].astype(np.float32), flow_up_np[..., 1].astype(np.float32), interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
-    return flow_up_np, warped
+    # warped = cv2.remap(img_b, flow_up_np[..., 0].astype(np.float32), flow_up_np[..., 1].astype(np.float32), interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT)
+    return flow_up_np, None
     import IPython
     IPython.embed()
     assert 0
@@ -203,7 +203,7 @@ def demo(args):
         counter = 0
         for img_name1 in images:
             for img_name2 in images:
-                if imfile1 <= imfile2:
+                if img_name1 <= img_name2:
                     continue
                 counter += 1
                 print(counter)
