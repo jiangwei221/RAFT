@@ -182,7 +182,7 @@ def demo(args):
     model.to(DEVICE)
     model.eval()
 
-    test_img_dir = '/media/jiangwei/data_ssd/imw_2021_test/phototourism/st_pauls_cathedral'
+    test_img_dir = '/ubc/cs/research/kmyi/jw221/imw-2020-test/st_pauls_cathedral'
     images = []
     for _, _, files in os.walk(test_img_dir):
         for f in files:
@@ -200,15 +200,19 @@ def demo(args):
         # images = sorted(images)
         # for imfile1, imfile2 in zip(images[:-1], images[1:]):
             # imfile1, imfile2 = imfile2, imfile1
-        for imfile1 in images:
-            for imfile2 in images:
+        counter = 0
+        for img_name1 in images:
+            for img_name2 in images:
                 if imfile1 <= imfile2:
                     continue
-                corr_path = os.path.join(corr_dir, f'{imfile1}->{imfile2}_corrs.npy')
-                img_name1 = imfile1
-                img_name2 = imfile2
-                imfile1 = os.path.join(test_img_dir, imfile1)
-                imfile2 = os.path.join(test_img_dir, imfile2)
+                counter += 1
+                print(counter)
+                # continue
+                corr_path = os.path.join(corr_dir, f'{img_name1}->{img_name2}_corrs.npy')
+                # img_name1 = imfile1
+                # img_name2 = imfile2
+                imfile1 = os.path.join(test_img_dir, img_name1)
+                imfile2 = os.path.join(test_img_dir, img_name2)
                 flow12, warped1 = raft_flow_a_to_b(model, imfile1, imfile2)
                 flow21, warped2 = raft_flow_a_to_b(model, imfile2, imfile1)
 
@@ -228,8 +232,8 @@ def demo(args):
                 end = flow21[pixel_ind[:, 0], pixel_ind[:, 1]]
                 corrs = np.concatenate([end, start], axis=1)
 
-                img_a = imageio.imread(imfile1)
-                img_b = imageio.imread(imfile2)
+                # img_a = imageio.imread(imfile1)
+                # img_b = imageio.imread(imfile2)
 
                 np.save(corr_path, corrs)
                 # import IPython
